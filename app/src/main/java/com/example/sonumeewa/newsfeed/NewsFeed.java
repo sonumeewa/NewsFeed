@@ -18,7 +18,7 @@ public class NewsFeed {
     public String getTitle(){
         return mTitle;
     }
-    private String getDescription(){
+    public String getDescription(){
         return mInfo;
     }
     public String getImageUrl(){
