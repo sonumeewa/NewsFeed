@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">NewsFeed</string>
+    <string name="settings_menu_item">Settings</string>
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
+    <string name="settings_title">NewsFeed Settings</string>
+
+
+
+
+    <string name="settings_source_label">SOURCE</string>
+    <string name="settings_news_source_key" translatable="false">news_source</string>
+    <string name="settings_news_source_default" translatable="false">bbc-news</string>
+    <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
+    <string name="settings_sort_by_label">Sort By</string>
+    <string name="settings_sort_by_key" translatable="false">sort_by</string>
+    <string name="settings_sort_by_default" translatable="false">@string/settings_sort_by_top_value</string>
+
+    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
+    <string name="settings_sort_by_top_label">Top</string>
+    <string name="settings_sort_by_top_value" translatable="false">top</string>
+
+
+
+
+    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+    <string name="settings_sort_by_most_recent_label">Most Recent</string>
+    <string name="settings_sort_by_most_recent_value" translatable="false">latest</string>
+
 </resources>

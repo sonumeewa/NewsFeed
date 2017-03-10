@@ -6,8 +6,7 @@
     android:paddingRight="16dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:layout_height="wrap_content"
-    android:minHeight="80dp">
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"   >
 <TextView
     android:layout_width="match_parent"
     android:layout_height="0dp"
