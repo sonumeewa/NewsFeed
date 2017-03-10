@@ -15,19 +15,19 @@ public class NewsFeed {
     private String mTime;
 
 
-    private String getTitle(){
+    public String getTitle(){
         return mTitle;
     }
     private String getDescription(){
         return mInfo;
     }
-    private String getImageUrl(){
+    public String getImageUrl(){
         return mImageUrl;
     }
-    private String getUrl(){return mUrl;}
-    private String getTime(){ return mTime; }
+    public String getUrl(){return mUrl;}
+    public String getTime(){ return mTime; }
 
-    private NewsFeed(String Title, String Info, String ImageUrl,String Url, String Time){
+    public NewsFeed(String Title, String Info, String ImageUrl,String Url, String Time){
         mTitle=Title;
         mInfo=Info;
         mImageUrl=ImageUrl;
