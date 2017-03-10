@@ -27,8 +27,8 @@ public class NewsFeed {
     public String getUrl(){return mUrl;}
     public String getTime(){ return mTime; }
 
-    public NewsFeed(String Title, String Info, String ImageUrl,String Url, String Time){
-        mTitle=Title;
+    public NewsFeed(String Titles, String Info, String ImageUrl,String Url, String Time){
+        mTitle=Titles;
         mInfo=Info;
         mImageUrl=ImageUrl;
         mTime=Time;
