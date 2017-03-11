@@ -39,4 +39,5 @@ public class NewsFeed {
         imageBitmap=image;
     }
 
+
 }

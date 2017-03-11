@@ -25,6 +25,7 @@ import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.content.AsyncTaskLoader;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -34,7 +35,9 @@ import java.util.List;
 
 import javax.xml.transform.Source;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+import static android.os.Build.VERSION_CODES.N;
 import static android.view.View.GONE;
 
 public class NewsFeedActivity extends AppCompatActivity implements LoaderCallbacks<List<NewsFeed>>{
@@ -47,73 +50,6 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderCallbac
     private static final int NEWSFEEDS_LOADER_ID = 1;
     private TextView mEmptyStateTextView;
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Loader<List<NewsFeed>> onCreateLoader(int i, Bundle bundle) {
-
-        SharedPreferences sharedPrefs=PreferenceManager.getDefaultSharedPreferences(this);
-        String source=sharedPrefs.getString(getString(R.string.settings_news_source_key),getString(R.string.settings_news_source_default));
-
-        String sortBy = sharedPrefs.getString(
-                getString(R.string.settings_sort_by_key),
-                getString(R.string.settings_sort_by_default)
-        );
-
-
-        Uri baseUri = Uri.parse(URL_FOR_NEWS);
-        Uri.Builder uriBuilder = baseUri.buildUpon();
-
-       uriBuilder.appendQueryParameter("source", source);
-        uriBuilder.appendQueryParameter("sortBy", sortBy );
-        uriBuilder.appendQueryParameter("apiKey","717e258525624b0a9b6ae5dccb470ecf");
-
-        Log.i(LOG_TAG,"oncreateloadin working");
-        return new NewsFeedLoader(this, uriBuilder.toString());
-
-
-    }
-
-
-    @Override
-    public void onLoadFinished(Loader<List<NewsFeed>> loader, List<NewsFeed> Newsfeeds) {
-        mAdapter.clear();
- if (Newsfeeds != null && !Newsfeeds.isEmpty()) {
-     Log.i(LOG_TAG,"loadfinished working");
-     View loadingIndicator=findViewById(R.id.sort_by_spinner);
-     loadingIndicator.setVisibility(GONE);
-
-            mAdapter.addAll(Newsfeeds);
-
-        }
-        else
- {
-     mEmptyStateTextView=(TextView)findViewById(R.id.empty_view);
-     mEmptyStateTextView.setText("NO NEWS FETCHED");
- }
-    }
-    @Override
-    public void onLoaderReset(Loader<List<NewsFeed>> loader) {
-        Log.i(LOG_TAG,"onresetloadin working");
-        mAdapter.clear();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,20 +86,90 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderCallbac
         ConnectivityManager connMgr=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=connMgr.getActiveNetworkInfo();
 
-       if(networkInfo!=null&&networkInfo.isConnected()){
-           LoaderManager loaderManager = getLoaderManager();
+        if(networkInfo!=null&&networkInfo.isConnected()){
+            LoaderManager loaderManager = getLoaderManager();
 
-           loaderManager.initLoader(NEWSFEEDS_LOADER_ID, null, this);
+            loaderManager.initLoader(NEWSFEEDS_LOADER_ID, null, this);
 
-       }
+        }
         else{
-           View loadingIndicator=findViewById(R.id.sort_by_spinner);
-           loadingIndicator.setVisibility(GONE);
-           mEmptyStateTextView=(TextView)findViewById(R.id.empty_view);
-           mEmptyStateTextView.setText("No Ineternet Service");
-       }
+            View loadingIndicator=(ProgressBar)findViewById(R.id.sort_by_spinner);
+            loadingIndicator.setVisibility(GONE);
+            mEmptyStateTextView=(TextView)findViewById(R.id.empty_view);
+            newsListView.setEmptyView(mEmptyStateTextView);
+            mEmptyStateTextView.setText("No Ineternet Service");
+        }
 
     }
+
+
+    @Override
+    public Loader<List<NewsFeed>> onCreateLoader(int i, Bundle bundle) {
+
+        SharedPreferences sharedPrefs=PreferenceManager.getDefaultSharedPreferences(this);
+        String source=sharedPrefs.getString(getString(R.string.settings_news_source_key),getString(R.string.settings_news_source_default));
+
+
+
+        Uri baseUri = Uri.parse(URL_FOR_NEWS);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("source", source);
+        uriBuilder.appendQueryParameter("sortBy", "top");
+        uriBuilder.appendQueryParameter("apiKey","717e258525624b0a9b6ae5dccb470ecf");
+
+        Log.i(LOG_TAG,"oncreateloadin working");
+        return new NewsFeedLoader(this, uriBuilder.toString());
+
+
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onLoadFinished(Loader<List<NewsFeed>> loader, List<NewsFeed> Newsfeeds) {
+        View loadingIndicator=findViewById(R.id.sort_by_spinner);
+        loadingIndicator.setVisibility(View.GONE);
+        mAdapter.clear();
+
+
+        if (Newsfeeds != null && !Newsfeeds.isEmpty()) {
+            Log.i(LOG_TAG, "loadfinished working");
+            mAdapter.addAll(Newsfeeds);
+
+        }
+
+
+
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<NewsFeed>> loader) {
+        Log.i(LOG_TAG,"onresetloadin working");
+        mAdapter.clear();
+
+    }
+
+
 
 
 }

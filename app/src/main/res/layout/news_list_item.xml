@@ -6,7 +6,8 @@
     android:paddingRight="16dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:layout_height="?android:attr/listPreferredItemHeightLarge"   >
+    android:background="#FFFDE7"
+    android:layout_height="240dp"   >
 <TextView
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -39,15 +40,17 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="3"
+                android:paddingStart="16dp"
                 android:textAllCaps="true"
                 android:textColor="#2B3D4D"
-                android:textSize="12sp"
+                android:textSize="18sp"
                 android:layout_weight="1"
                 android:id="@+id/title_textview"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:padding="16dp"
                 android:id="@+id/description_textview"
                 />
 
